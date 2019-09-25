@@ -59,7 +59,9 @@
 #====================================================================================================================
 
 -What Is Needed to Run This Program:
-	A.  A CSV file in the same folder.
+
+	A.  A CSV file in the same folder. 
+	Note: You will want clear column names for the detector to work properly.
 
 	B.  Python3 interpreter in a terminal/shell environment
 
@@ -117,7 +119,7 @@
 
 	You should now be able to proceed to the Operating Instructions section.
 
-	WHEN YOU ARE DONE RUNNING THE DRIVER PROGRAM SEEN BELOW, feel free to:
+	WHEN YOU ARE DONE RUNNING THE DRIVER PROGRAM, feel free to:
 	conda deactivate
 
 
