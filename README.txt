@@ -1,5 +1,5 @@
 -Project: Sanitized CSV Creator
--Version: 1.0
+-Version: 1.1
 -Author:  ***REMOVED***
 
 #====================================================================================================================
@@ -18,6 +18,7 @@
 	The program also creates the sanitized CSVs separate from your original CSVs, so
 	you can open both in a sheet editor like Excel and simply copy the original values
 	into the sanitized version, where desired.
+
 	Just be sure to hide your original CSVs before sending your project to anyone ;)
 
 #====================================================================================================================
@@ -131,15 +132,32 @@
 
 #====================================================================================================================
 
+-Changes Since Version 1.0:
+	
+	1.)  Added a helper function to ensure* unique IDs are created for a column (even if the odds
+	of making the same one would have been 1/285 decillion)
+
+	2.)  As Sender/Recpient/Address are ambiguous terms that can refer to Email, Postal, IP, and the like,
+	I've made tweaks to the detector to recognize them as such, and have it look for the first value of the
+	column in question to make that determination.
+	
+	3.)  The auto-detector will no longer try to take in CSV files that begin with a period.
+	
+	4.)  Simple README changes were made, like adding vertical spacing past the "What is Needed to Run"
+	title, informing the user that column names matter for proper detection, adding a changelog of sorts
+	here, etc.
+
+#====================================================================================================================
+
 -Additional Remarks:
 
 	Though I've created many tools and projects, this is the first one I'm releasing publicly.
-	If people find it useful enough, I'll clean up a bit and go the extra distance to make it pip-able,
-	and offer additional support.
+	If people find it useful enough, I'll clean up a bit and go the extra distance to make it more easily
+	obtainable and offer additional support.
 
 	And of course, if you find any bugs or issues, dislike or like this design, please let me know!
 	I can only grow with the feedback provided.  Thank you for your time and for using this program.
-	Hopefully it proves beneficial.
+	Hopefully it proves beneficial
 
 #====================================================================================================================
 
