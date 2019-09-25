@@ -29,6 +29,9 @@
 |
 |+++README.txt (or README.pdf if you prefer bolding!)
 |
+|+++LICENSE.txt
+|	So no one gets in trouble for using this software 0:)
+|
 |+++setup.py
 |	ONE primary way to install needed modules (discussed in next section)
 |
@@ -143,7 +146,9 @@
 	
 	3.)  The auto-detector will no longer try to take in CSV files that begin with a period.
 	
-	4.)  Simple README changes were made, like adding vertical spacing past the "What is Needed to Run"
+	4.)  Arguably the most important thing for a public software distribution, a license has been added!
+
+	5.)  Simple README changes were made, like adding vertical spacing past the "What is Needed to Run"
 	title, informing the user that column names matter for proper detection, adding a changelog of sorts
 	here, etc.
 
