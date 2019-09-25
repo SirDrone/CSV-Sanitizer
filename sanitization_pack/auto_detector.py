@@ -7,6 +7,10 @@ import pandas as pd
 from sanitization_pack.functions import *
 
 
+#########################################################################################################
+#					   Helper Method Section					#
+#########################################################################################################
+
 def options_are_valid(options):
 	if type(options) != list:
 		raise TypeError("Object supplied to options must be a list")
@@ -15,7 +19,8 @@ def options_are_valid(options):
 	elif any(type(x) != bool for x in options):
 		raise TypeError("All items supplied in the options list must be True/False")
 	elif True not in options:
-		raise ValueError("Why would you even want to run this?  There's nothing you set to sanitize..")
+		raise ValueError("Why would you even want to run this?" \
+		"There's nothing you set to sanitize..")
 	else:
 		return True
 
@@ -26,7 +31,8 @@ def get_list_of_csv_files():
 	for local_file in os.listdir():
 		if ".csv" in local_file:
 			if "sanitized" not in local_file:
-				list_of_supposed_csvs.append(local_file)
+				if not local_file.startswith("."):
+					list_of_supposed_csvs.append(local_file)
 
 	if len(list_of_supposed_csvs) == 0:
 		raise FileNotFoundError("Local CSV file not found.  Exiting..")
@@ -54,6 +60,8 @@ def time_column_exists(columns, end=False):
 	return False
 
 
+#A helper method that, provided start and end date columns have already been tracked,
+#creates sanitized versions of these items in tandem, so that start < end
 def create_start_and_end_date_columns(df, start_column, end_column):
 	size = len(df.values)
 	start_column_index = list(df.columns).index(start_column)
@@ -65,7 +73,35 @@ def create_start_and_end_date_columns(df, start_column, end_column):
 		df.iloc[row_index, start_column_index] = start_date
 		df.iloc[row_index, end_column_index] = end_date		
 		row_index += 1
+
+
+#The final helper method that ensures we only have unique IDs.
+#Let it be said this is merely a guarantee, as we have over
+#285 decillion possible IDs
+def create_unique_ids(df):
+	size = len(df.values)
+	if size > 285794257465697108736779475033784320:
+		raise IndexError("I don't even know how you have a dataframe big enough" \
+		"to break 285 decillion rows but somehow you did it.  Gratz.\n" \
+		"Cannot sanitize IDs..")
+
+	unique_ids = []
+	row_index = 0
+
+	while row_index < size:
+		current_id = create_id()
+		while current_id in unique_ids:
+			current_id = create_id()
+		unique_ids.append(current_id)
+		row_index += 1
+
+	return unique_ids
 	
+
+#########################################################################################################
+#					    Main Detector Code						#
+#########################################################################################################
+
 
 #This function automatically picks up any CSVs it sees,
 #and then attempts to decipher how best to assign dummy values
@@ -110,9 +146,11 @@ def auto_create_sanitized_CSVs(options):
 					#Lambdas are useful for the apply call, as an argument would
 					#have been passed to our functions otherwise, which is a no-go.
 					df[column] = df[column].apply(lambda x: create_phone_number())
+
 			elif any(tag in column.upper() for tag in unique_tags):
 				if sanitize_ids:
-					df[column] = df[column].apply(lambda x: create_id())
+					df[column] = create_unique_ids(df)
+
 			elif any(tag in column.upper() for tag in stamp_tags):
 				if sanitize_dates:
 					if start_column and end_column:
@@ -131,18 +169,22 @@ def auto_create_sanitized_CSVs(options):
 						#Likewise here, the date column is normal, and there's no
 						#start or end dates
 						df[column] = df[column].apply(lambda x: create_stamp())
+
 			elif "EMAIL" in column.upper():
 				if sanitize_emails:
 					df[column] = df[column].apply(lambda x: create_email_address())
+
 			elif (any(tag in column.upper() for tag in ip_tags) or column.upper()=="IP"):
 				if sanitize_ips:
 					df[column] = df[column].apply(lambda x: create_ip())
+
 			elif any(tag in column.upper() for tag in boolean_tags):
 				if sanitize_booleans:
 					df[column] = df[column].apply(lambda x: create_boolean())
+
 			elif any(tag in column.upper() for tag in ambiguous_address_tags):
 				first_value = df[column].values[0]
-				ip_matches = re.findall(r"[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}",
+				ip_matches = re.findall(r"[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}", \
 				first_value) #Finds items like 192.168.14.12
 				if ((len(ip_matches) > 0) and (sanitize_ips)): #if ip
 					df[column] = df[column].apply(lambda x: create_ip())
@@ -150,6 +192,7 @@ def auto_create_sanitized_CSVs(options):
 					df[column] = df[column].apply(lambda x: create_email_address())
 				elif sanitize_addresses: #otherwise assume is postal address; MAC is ID
 					df[column] = df[column].apply(lambda x: create_address())
+
 			elif "NAME" in column.upper():
 				if sanitize_names:
 					if (("FULL" in column.upper()) or (column.upper() == "NAME")):
@@ -158,6 +201,7 @@ def auto_create_sanitized_CSVs(options):
 						df[column] = df[column].apply(lambda x: create_first_name())
 					elif any(tag in column.upper() for tag in last_name_tags):
 						df[column] = df[column].apply(lambda x: create_last_name())
+
 			else:
 				try:
 					#This next test will see if we have numbers for our column.
