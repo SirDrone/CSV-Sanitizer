@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import re
 import pandas as pd
 
 from sanitization_pack.functions import *
@@ -95,10 +96,10 @@ def auto_create_sanitized_CSVs(options):
 
 		unique_tags = ["ID", "UNIQUE", "SSN", "NO.", "MAC"]
 		stamp_tags = ["DATE", "TIME", "STAMP", "DAY"]
-		email_tags = ["SENDER", "RECIPIENT", "EMAIL"]
 		ip_tags = [" IP", "IP "]
 		boolean_tags = [" HAS", "HAS ", "IS ", " IS"]
 		last_name_tags = ["SUR", "L"]
+		ambiguous_address_tags = ["SENDER", "RECIPIENT", "ADDRESS"]
 
 		#If we find a predetermined tag in our column, and if the sanitization option
 		#is set, we'll apply one of our sanitzation pack's appropriate functions in 
@@ -130,7 +131,7 @@ def auto_create_sanitized_CSVs(options):
 						#Likewise here, the date column is normal, and there's no
 						#start or end dates
 						df[column] = df[column].apply(lambda x: create_stamp())
-			elif any(tag in column.upper() for tag in email_tags):
+			elif "EMAIL" in column.upper():
 				if sanitize_emails:
 					df[column] = df[column].apply(lambda x: create_email_address())
 			elif (any(tag in column.upper() for tag in ip_tags) or column.upper()=="IP"):
@@ -139,8 +140,15 @@ def auto_create_sanitized_CSVs(options):
 			elif any(tag in column.upper() for tag in boolean_tags):
 				if sanitize_booleans:
 					df[column] = df[column].apply(lambda x: create_boolean())
-			elif "ADDRESS" in column.upper():
-				if sanitize_addresses:
+			elif any(tag in column.upper() for tag in ambiguous_address_tags):
+				first_value = df[column].values[0]
+				ip_matches = re.findall(r"[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}",
+				first_value) #Finds items like 192.168.14.12
+				if ((len(ip_matches) > 0) and (sanitize_ips)): #if ip
+					df[column] = df[column].apply(lambda x: create_ip())
+				elif (("@" in first_value) and (sanitize_emails)): #if email
+					df[column] = df[column].apply(lambda x: create_email_address())
+				elif sanitize_addresses: #otherwise assume is postal address; MAC is ID
 					df[column] = df[column].apply(lambda x: create_address())
 			elif "NAME" in column.upper():
 				if sanitize_names:
