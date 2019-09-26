@@ -8,8 +8,9 @@ from sanitization_pack.functions import *
 
 
 #########################################################################################################
-#					   Helper Method Section					#
+#					   Helper Function Section					#
 #########################################################################################################
+
 
 def options_are_valid(options):
 	if type(options) != list:
