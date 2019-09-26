@@ -10,7 +10,7 @@ def create_example_email_csv(number_of_rows=72):
 	if type(number_of_rows) != int:
 		raise TypeError("number_of_rows must be an int")
 	elif number_of_rows < 1:
-		raise ValueError("number_of_rows cannot be negative")
+		raise ValueError("number_of_rows cannot be less than one")
 
 	column_names = ["Message ID", "Start date", "End date", "Sender", "Message size", \
 	"Subject", "Direction", "Attachments", "Recipient address", \
@@ -70,7 +70,7 @@ def create_example_customer_csv(number_of_rows=72):
 	if type(number_of_rows) != int:
 		raise TypeError("number_of_rows must be an int")
 	elif number_of_rows < 1:
-		raise ValueError("number_of_rows cannot be negative")
+		raise ValueError("number_of_rows cannot be less than one")
 
 	column_names = ["ID", "Name", "Email", "Phone Number", "Address", \
 	"Purchase Date", "Product", "Points Earned", "Is Premium Member", \
