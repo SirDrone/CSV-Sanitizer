@@ -6,7 +6,7 @@ setup(
 	author='***REMOVED***',
 	author_email='alexkirk95@gmail.com',
 	packages=['sanitization_pack'],
-	install_requires=['datetime', 'pandas'],
+	install_requires=['pandas'],
 	version='1.1',
 	license='SirDrone',
 	description='Automatically creates sanitized CSVs based on existing CSVs in folder',
