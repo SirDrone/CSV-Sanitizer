@@ -14,8 +14,8 @@ def create_example_email_csv(number_of_rows=72):
 
 	column_names = ["Message ID", "Start date", "End date", "Sender", "Message size", \
 	"Subject", "Direction", "Attachments", "Recipient address", \
-	"Event target", "Event date", "Event status", "Event target IP address", \
-	"Has encryption", "Event SMTP reply code", "Event description"]
+	"Event target", "Event date", "Event status", "Sender IP address", \
+	"Has encryption"]
 	
 	message_ids = []
 	start_dates = []
@@ -29,10 +29,8 @@ def create_example_email_csv(number_of_rows=72):
 	event_mediums = []
 	event_dates = []
 	event_statuses = []
-	target_ips = []
+	sender_ips = []
 	has_encryption = []
-	event_smtp_codes = []
-	event_descriptions = []
 
 	current_index = 0
 
@@ -50,17 +48,14 @@ def create_example_email_csv(number_of_rows=72):
 		event_mediums.append("GMAIL_INBOX")
 		event_dates.append(start_date)
 		event_statuses.append("DELIVERED")
-		target_ips.append("")
+		sender_ips.append("")
 		has_encryption.append("Not encrypted")
-		event_smtp_codes.append("")
-		event_descriptions.append("")
 
 		current_index += 1
 
 	data_lists = [message_ids, start_dates, end_dates, senders, message_sizes, \
 	subjects, directions, attachments, recepients, event_mediums, \
-	event_dates, event_statuses, target_ips, has_encryption, \
-	event_smtp_codes, event_descriptions]
+	event_dates, event_statuses, sender_ips, has_encryption]
 
 	pd.DataFrame(data=dict(zip(column_names, data_lists)), columns=column_names). \
 	to_csv("email_example.csv", index=False)
