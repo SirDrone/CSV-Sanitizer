@@ -75,7 +75,7 @@ def create_last_name():
 	"Chen", "Cheung", "Lee", "Li", "Wang", "Wong", "Lin", "Moore", "Clark", \
 	"Adams", "Collins", "Edwards", "Cook", "Ward", "Price", "Hall", "Young", \
 	"Kirk", "Robinson", "Wright", "O'Neill", "O'Connor", "McLaughlin", \
-	"Hamilton", "Campbell", "MacDonald", "Paterson", "Phillips", "Owen"\
+	"Hamilton", "Campbell", "MacDonald", "Paterson", "Phillips", "Owen", \
 	"Morozov", "Volkov", "Ivanov", "Hansen", "Berg", "Larsen", "Weber"]
 
 	return choice(last_names)
