@@ -45,8 +45,7 @@ def get_list_of_csv_files():
 #and return them if they exist
 def time_column_exists(columns, end=False):
 	stamp_tags = ["DATE", "DAY", "STAMP", "TIME"]
-	end_date_tags = ["CLOSING", "END", "ENDING", "FINISH", "FINISHING", \
-	"STAMP", "TIME"]
+	end_date_tags = ["CLOSING", "END", "ENDING", "FINISH", "FINISHING"]
 	start_date_tags = ["BEGINNING", "FIRST", "INITIAL", "START"]
 	
 	for column in columns:
