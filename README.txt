@@ -152,8 +152,6 @@
 	title, informing the user that column names matter for proper detection, adding a changelog of sorts
 	here, etc.
 
-	I've updated this text_file so it can appear instead of the binary pdf on source_forge (hi)!
-
 #====================================================================================================================
 
 -Additional Remarks:
