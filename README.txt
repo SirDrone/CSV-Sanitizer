@@ -27,7 +27,7 @@
 
 +sanitized_csv_project.zip
 |
-|+++README.txt (or README.pdf if you prefer bolding!)
+|+++README.txt 
 |
 |+++LICENSE.txt
 |	So no one gets in trouble for using this software 0:)
